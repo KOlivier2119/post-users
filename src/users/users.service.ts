@@ -12,7 +12,15 @@ export class UsersService {
         return this.prismaService.user.create({data: createUserData})
     }
 
-    getUser() {}
+    getUser() {
+        return this.prismaService.user.findMany();
+    }
 
-    getUserById() {}
+    getUserById(id: number) {
+        const user = this.prismaService.user.findUnique({ where: { id: id } })
+        if(!user) {
+            return "User Not Found";
+        }
+        return user;
+    }  
 }
