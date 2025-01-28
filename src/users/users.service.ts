@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { useActionData } from 'react-router-dom';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -23,4 +24,20 @@ export class UsersService {
         }
         return user;
     }  
+
+    async updateUserById(id: number, data: Prisma.UserUpdateInput)  {
+        const findUser = await this.getUserById(id);
+        if(!findUser) {
+            throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+        }
+
+        if(data.username) {
+            const findUser = await this.prismaService.user.findUnique({where: { username: data.username as string }})
+            if(findUser) {
+                throw new HttpException('Username Already Taken', HttpStatus.BAD_REQUEST);
+            }
+
+            return this.prismaService.user.update({where: {id: id}, data});
+        }
+    }
 }
