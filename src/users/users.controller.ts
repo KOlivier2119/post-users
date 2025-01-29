@@ -2,6 +2,7 @@ import { Body, Controller, Post, UsePipes, ValidationPipe, Get, Param, ParseIntP
 import { UsersService } from './users.service';
 import { createUserDto } from 'src/dtos/createUserDto.dto';
 import { UpdateUserDto } from 'src/dtos/UpdateUserDto.dto';
+import { updateUserSettingsDto } from 'src/dtos/updateUserSettings.dto';
 
 @Controller('users')
 export class UsersController {
@@ -36,5 +37,10 @@ export class UsersController {
     deleteUserById(@Param('id', ParseIntPipe) id: number) {
         this.userServices.deleteUserById(id);
         return "User deleted Successfully";
+    }
+
+    @Patch(':id/settings')
+    updateUserSettingsByUserId(@Param('id', ParseIntPipe) id: number, @Body() updateUserSettingsDto: updateUserSettingsDto) {
+      
     }
 }
