@@ -69,9 +69,10 @@ export class UsersService {
 
     async updateUserSettings(userId: number, data: Prisma.UserSettingUpdateInput) {
         const findUser = await this.getUserById(userId);
-        if (findUser instanceof HttpException) throw findUser;
-        if (!findUser.userSetting) {
-            
+        if (!findUser) throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+        if (findUser instanceof HttpException || !findUser.userSetting) {
+            throw new HttpException('Bad Request', 400);
         }
+       return this.prismaService.userSetting.update({ where: {userId}, data});
     }
 }

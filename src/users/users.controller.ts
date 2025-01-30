@@ -41,6 +41,6 @@ export class UsersController {
 
     @Patch(':id/settings')
     updateUserSettingsByUserId(@Param('id', ParseIntPipe) id: number, @Body() updateUserSettingsDto: updateUserSettingsDto) {
-      
+      return this.userServices.updateUserSettings(id, updateUserSettingsDto)
     }
 }
