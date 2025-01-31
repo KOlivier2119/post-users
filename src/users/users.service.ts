@@ -35,7 +35,8 @@ export class UsersService {
                     notificationsOn: true,
                     smsEnabled: true
                 }
-            }
+            },
+            posts: true,
         } })
         if (!user) {
             return new HttpException('User Not Found', HttpStatus.NOT_FOUND);
