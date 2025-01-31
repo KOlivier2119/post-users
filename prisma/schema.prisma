@@ -20,6 +20,7 @@ model User {
   displayName String? @default("")
   userSetting UserSetting?
   posts Post[]
+  groupPosts UserOnGroupPosts[]
 }
 
 model UserSetting {
@@ -36,4 +37,20 @@ model Post {
   description String
   user User @relation(fields: [userId], references: [id])
   userId Int 
+}
+
+model GroupPost {
+  id Int @default(autoincrement()) @id
+  title String
+  description String
+  users UserOnGroupPosts[]
+}
+
+model UserOnGroupPosts {
+  user User @relation(fields: [userId], references: [id])
+  userId Int 
+  groupPost GroupPost @relation(fields: [groupPostId], references: [id])
+  groupPostId Int
+
+  @@id([userId, groupPostId])
 }
